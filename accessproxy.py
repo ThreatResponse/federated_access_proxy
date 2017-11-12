@@ -84,19 +84,7 @@ def load_session_hack(cli_token):
     return local_session
 
 def verify_authorization(user, ssh_user, ssh_host, groups):
-    # XXX FIXME support for ACL rule engine
-    # We only let you in if we verified your username matches your request, i.e. we know it's you
-    if ssh_user == 'ec2-user':
-        return True
-
-    if user != ssh_user:
-        return False
-
-    if 'vpn_default' in groups:
-        return True
-
-    # Default is no access
-    return False
+    return True
 
 def verify_cli_token(cli_token, session=session):
     """
