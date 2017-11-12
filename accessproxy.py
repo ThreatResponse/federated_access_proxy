@@ -140,7 +140,10 @@ def main():
     user = request.headers.get('X-Forwarded-User')
     groups = request.headers.get('X-Forwarded-Groups', None)
     # The upstream access proxy separate groups with '|', but we use ','
-    groups = groups.replace('|', ',')
+    if groups is not None:
+        groups = groups.replace('|', ',')
+    else:
+        pass
 
     # Session set up
     session['username'] = user
