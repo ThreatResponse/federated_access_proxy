@@ -15,19 +15,19 @@ build: Dockerfile
 
 compose: compose/docker-compose.base.yml
 	touch compose/local.env
-	docker-compose -f compose/docker-compose.base.yml -f compose/docker-compose.rebuild.yml -f compose/docker-compose.dev.yml $(COMPOSE_CMD)
+	/usr/local/bin/docker-compose -f compose/docker-compose.base.yml -f compose/docker-compose.rebuild.yml -f compose/docker-compose.dev.yml $(COMPOSE_CMD)
 
 compose-detach: compose/docker-compose.base.yml
 	touch compose/local.env
-	docker-compose -f compose/docker-compose.base.yml -f compose/docker-compose.rebuild.yml -f compose/docker-compose.dev.yml $(COMPOSE_CMD) -d
+	/usr/local/bin/docker-compose -f compose/docker-compose.base.yml -f compose/docker-compose.rebuild.yml -f compose/docker-compose.dev.yml $(COMPOSE_CMD) -d
 
 compose-staging: compose/docker-compose.base.yml
 	touch compose/local.env
-	docker-compose -f compose/docker-compose.base.yml -f compose/docker-compose.norebuild.yml -f compose/docker-compose.stg.yml $(COMPOSE_CMD)
+	/usr/local/bin/docker-compose -f compose/docker-compose.base.yml -f compose/docker-compose.norebuild.yml -f compose/docker-compose.stg.yml $(COMPOSE_CMD)
 
 compose-production: compose/docker-compose.base.yml
 	touch compose/local.env
-	docker-compose -f compose/docker-compose.base.yml -f compose/docker-compose.norebuild.yml -f compose/docker-compose.prod.yml $(COMPOSE_CMD)
+	/usr/local/bin/docker-compose -f compose/docker-compose.base.yml -f compose/docker-compose.norebuild.yml -f compose/docker-compose.prod.yml $(COMPOSE_CMD)
 
 run: Dockerfile
 	docker run -i -p $(PORTS)  -t $(IMAGE_NAME)
