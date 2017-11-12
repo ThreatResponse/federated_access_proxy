@@ -143,7 +143,7 @@ def main():
     if groups is not None:
         groups = groups.replace('|', ',')
     else:
-        pass
+        groups = ""
 
     # Session set up
     session['username'] = user
