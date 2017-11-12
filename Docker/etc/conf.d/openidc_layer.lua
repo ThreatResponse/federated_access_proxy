@@ -45,14 +45,16 @@ ngx.req.set_header("via",session.data.user.email)
 -- Flatten groups for apps that won't read JSON
 local gprs = ""
 local usergrp = ""
-if session.data.user.groups then
-    usergrp = session.data.user.groups
-else
-    usergrp = session.data.user['https://sso.mozilla.com/claim/groups']
-end
-for k,v in pairs(usergrp) do
-  grps = grps and grps.."|"..v or v
-end
+
+-- if session.data.user.groups then
+--     usergrp = session.data.user.groups
+-- else
+--    usergrp = session.data.user['https://sso.mozilla.com/claim/groups']
+-- end
+-- for k,v in pairs(usergrp) do
+--   grps = grps and grps.."|"..v or v
+-- end
+
 ngx.req.set_header("X-Forwarded-Groups", grps)
 
 -- Access control: only allow specific users in (this is optional, without it all authenticated users are allowed in)

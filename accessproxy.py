@@ -129,14 +129,16 @@ def main():
     ssh_port = params.get('port')
     ssh_user = params.get('user')
 
+    print(request.headers)
+
     # Reverse OIDC Proxy headers set up
-    required_headers = ['X-Forwarded-User', 'X-Forwarded-Groups']
+    required_headers = ['X-Forwarded-User']
     if not set(required_headers).issubset(request.headers.keys()):
         return render_template('denied.html', reason='Incorrect HEADERS'), 403
 
     # user is a verified user
     user = request.headers.get('X-Forwarded-User')
-    groups = request.headers.get('X-Forwarded-Groups')
+    groups = request.headers.get('X-Forwarded-Groups', None)
     # The upstream access proxy separate groups with '|', but we use ','
     groups = groups.replace('|', ',')
 
