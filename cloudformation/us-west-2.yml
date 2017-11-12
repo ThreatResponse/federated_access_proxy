@@ -3,12 +3,12 @@ Description: "Mozilla Federated Access Proxy"
 Mappings:
   dev:
       us-west-2:
-        AMI: ami-5bc13c23
-        CertificateARN: "arn:aws:acm:us-west-2:656532927350:certificate/93b81548-c28d-4912-b621-fc6cc6b52274"
+        AMI: ami-6424f21c
+        CertificateARN: "arn:aws:acm:us-west-2:576309420438:certificate/3b1c10d9-aa6b-444a-a7ee-b01c541dc88a"
   prod:
       us-west-2:
-        AMI: ami-5bc13c23
-        CertificateARN: ""
+        AMI: ami-6424f21c
+        CertificateARN: "arn:aws:acm:us-west-2:576309420438:certificate/3b1c10d9-aa6b-444a-a7ee-b01c541dc88a"
 Parameters:
   SSHKeyName:
     Description: Name of the existing ssh key that should have access
@@ -268,17 +268,16 @@ Resources:
             - wget https://aws-codedeploy-$REGION.s3.amazonaws.com/latest/install
             - chmod +x ./install
             - ./install auto
-            - aws ecr get-login --region us-west-2 | bash
-            - docker run -d -e SQS_QUEUE=AccessProxy-fluentd-sqs -v /var/log:/var/log 656532927350.dkr.ecr.us-west-2.amazonaws.com/sqs-fluentd:latest td-agent -c /etc/td-agent/td-agent.conf
+            - aws ecr get-login --no-include-email --region us-west-2 | bash
             - mkdir /home/ec2-user/app
             - cd /home/ec2-user/app
-            - git clone https://github.com/mozilla-iam/federated_access_proxy
+            - git clone https://github.com/threatresponse/federated_access_proxy
             - git checkout production
             - cd /home/ec2-user/app/federated_access_proxy/Docker
             - make compose-production
       SecurityGroups:
         - Ref: AccessProxySecGroup
-      InstanceType: "t2.medium"
+      InstanceType: "t2.micro"
   AccessProxyLaunchConfigDev:
     Type: "AWS::AutoScaling::LaunchConfiguration"
     Condition: UseDevCondition
@@ -301,16 +300,15 @@ Resources:
             - wget https://aws-codedeploy-$REGION.s3.amazonaws.com/latest/install
             - chmod +x ./install
             - ./install auto
-            - aws ecr get-login --region us-west-2 | bash
-            - docker run -d -e SQS_QUEUE=AccessProxy-fluentd-sqs -v /var/log:/var/log 656532927350.dkr.ecr.us-west-2.amazonaws.com/sqs-fluentd:latest td-agent -c /etc/td-agent/td-agent.conf
+            - aws ecr get-login --no-include-email --region us-west-2 | bash
             - mkdir /home/ec2-user/app
             - cd /home/ec2-user/app
-            - git clone https://github.com/mozilla-iam/federated_access_proxy
+            - git clone https://github.com/threatresponse/federated_access_proxy
             - cd /home/ec2-user/app/federated_access_proxy/Docker
             - make compose-staging
       SecurityGroups:
         - Ref: AccessProxySecGroup
-      InstanceType: "t2.medium"
+      InstanceType: "t2.micro"
   HTTPsListenerRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
     Properties:
@@ -355,8 +353,8 @@ Resources:
       TargetGroupARNs:
          - Ref: ALBTargetGroup
          - Ref: ALBTargetGroup1
-      MaxSize: "5"
-      MinSize: "3"
+      MaxSize: "1"
+      MinSize: "1"
       VPCZoneIdentifier:
         - Ref: AccessProxySubnet1
         - Ref: AccessProxySubnet2

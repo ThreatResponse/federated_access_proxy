@@ -1,6 +1,6 @@
 IMAGE_NAME	:= "accessproxy"
 PORTS		:= "8080:80"
-HUB_URL		:= "656532927350.dkr.ecr.us-west-2.amazonaws.com"
+HUB_URL		:= "576309420438.dkr.ecr.us-west-2.amazonaws.com"
 COMPOSE_CMD	:= "up"
 
 all: help
